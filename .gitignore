@@ -1,0 +1,67 @@
+/** @file ish_cod.cpp */
+#include <iostream>
+using namespace std;
+/** function alogoritma deiksta
+vhodnye dannye:
+matrica smegnosty
+kol-vo yzlov
+
+*/
+void Dijkstra(int **a, int n)
+{
+	int count, index, i, u;
+	int *distance = new int[n]; ///Sozdaem massiv dly kratchaishih pytei
+	bool *visited = new bool[n]; ///  massiv bulevskyh peremennyh dlja hranenija informacii o poseshhennyh vershinah 
+	for (i = 0; i < n; i++)
+	{
+		distance[i] = 32500; /// zapolnaem chislennyi massim zavedomo max chislamy
+		visited[i] = false; /// V bulevskom massive kazhduju iz vershin otmechaem kak ne poseshhennuju 
+	}
+	distance[0] = 0; /// Ishodnaja vershina 
+	for (count = 0; count < n - 1; count++) ///Ishem naymenshee rastoanie
+	{
+		int min = INT_MAX;
+		for (i = 0; i < n; i++)
+		if (!visited[i] && distance[i] <= min) ///Peresmatrivaem rasstoyanya
+		{
+			min = distance[i]; index = i;
+		}
+		u = index;
+		visited[u] = true; /// Otmechaem poseshennyu
+		for (i = 0; i < n; i++)
+		if (!visited[i] && a[u][i] && distance[u] != INT_MAX && distance[u] + a[u][i] < distance[i]) /// Vychislenie rasstojanija 
+			distance[i] = distance[u] + a[u][i];
+	}
+
+	cout << "Kratchaishee rastoyanye ot 1 yzla do ostal'nyh"; ///< Vyvod kratchajshih rasstoyaniy 
+	for (i = 1; i < n; i++)
+		cout << distance[i] << " ";
+	cout << endl<< endl;
+}
+/**
+function main()
+
+*/
+int main(void)
+{
+
+	int n;
+	cout << "Vvedite kol-vo yzlov"; /// Vvod kolichestva uzlov
+	cin >> n;
+	/// Sozdanie matricy smezhnosti
+	int **a = new int *[n];
+	for (int i = 0; i < n; i++) 
+		a[i] = new int[n];
+	/// Vvod matricy smezhnosti
+	cout << "\nvvedite matricy smegnosti, esly ne syshestvyet pyti vvedite 32000 \n \n";
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			cin >> a[i][j];
+		}
+	}
+	cout << endl;
+	Dijkstra(a, n); /// Vyzov funkciju, realizujushhuju algoritm Dejkstry
+	return 0;
+}
